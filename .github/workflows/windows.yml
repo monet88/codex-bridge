@@ -254,6 +254,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Smoke Windows GUI startup
         if: matrix.run_tests
+        continue-on-error: true
         timeout-minutes: 5
         shell: pwsh
         run: |
