@@ -266,6 +266,45 @@ if (untranslatedLiterals.size > 0) {
   console.log(`[PASS] 9. All Chinese literals in ${scannedResources.length} desktop UI resources are covered`);
 }
 
-console.log("\n==> ALL VERIFICATION TESTS PASSED SUCCESSFULLY! (9/9 green)\n");
+// 10. Coverage scan: every Chinese literal in web-facing Swift sources must be translatable
+const swiftRoots = [
+  path.join(__dirname, "..", "Packages", "BridgeCore", "Sources", "BridgeServiceAppCore"),
+  path.join(__dirname, "..", "Packages", "BridgeCore", "Sources", "BridgeDesktopUI"),
+];
+const untranslatedSwift = new Set();
+const swiftToken = (raw) => { try { return JSON.parse(raw.replace(/\\\(/g, "\\\\(")); } catch (e) { return null; } };
+const walkSwift = (dir) => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walkSwift(full);
+    else if (entry.name.endsWith(".swift")) {
+      const src = fs.readFileSync(full, "utf8");
+      const re = /"(?:[^"\\\r\n]|\\.)*"/g;
+      let m;
+      while ((m = re.exec(src))) {
+        const raw = m[0];
+        if (!/[\u4e00-\u9fa5]/.test(raw)) continue;
+        const lit = swiftToken(raw);
+        if (!lit) continue;
+        const hasInterp = /\\\(/.test(raw);
+        const probe = hasInterp ? lit.replace(/\\\([^)]*\)/g, "3").trim() : lit.trim();
+        if (!probe) continue;
+        if (i18n.translate(probe) === probe && !i18n.DICT[probe]) {
+          untranslatedSwift.add(`${entry.name}: ${JSON.stringify(lit)}`);
+        }
+      }
+    }
+  }
+};
+swiftRoots.forEach(walkSwift);
+
+if (untranslatedSwift.size > 0) {
+  console.warn(`[WARN] ${untranslatedSwift.size} Chinese literals in web-facing Swift files are not covered:`);
+  for (const entry of [...untranslatedSwift].sort()) console.warn("  - " + entry);
+} else {
+  console.log("[PASS] 10. All Chinese literals in web-facing Swift files are covered");
+}
+
+console.log("\n==> ALL VERIFICATION TESTS PASSED SUCCESSFULLY! (10/10 green)\n");
 
 module.exports = { createI18nSandbox };
