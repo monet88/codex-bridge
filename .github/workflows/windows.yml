@@ -261,7 +261,7 @@ jobs:
             -PortableDir "$env:GITHUB_WORKSPACE\.build\windows-dist\${{ matrix.architecture }}"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Smoke tests
-        if: matrix.run_tests
+        if: matrix.run_tests && hashFiles('Packages/BridgeCore/Tests/**/*.swift') != ''
         working-directory: Packages/BridgeCore
         shell: pwsh
         run: |
