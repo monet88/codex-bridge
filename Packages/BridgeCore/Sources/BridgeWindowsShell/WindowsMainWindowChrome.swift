@@ -101,11 +101,11 @@
       guard let window, let menu = CreatePopupMenu() else { return }
       defer { _ = DestroyMenu(menu) }
 
-      appendMenuItem(menu, id: MenuCommand.openWorkbench, title: "打开工作台")
-      appendMenuItem(menu, id: MenuCommand.openMainWindow, title: "打开主窗口")
-      appendMenuItem(menu, id: MenuCommand.refresh, title: "立即刷新状态")
+      appendMenuItem(menu, id: MenuCommand.openWorkbench, title: "Open Workbench")
+      appendMenuItem(menu, id: MenuCommand.openMainWindow, title: "Open Main Window")
+      appendMenuItem(menu, id: MenuCommand.refresh, title: "Refresh Status Now")
       _ = AppendMenuW(menu, UINT(MF_SEPARATOR), 0, nil)
-      appendMenuItem(menu, id: MenuCommand.exit, title: "退出应用程序")
+      appendMenuItem(menu, id: MenuCommand.exit, title: "Exit Application")
 
       var position = POINT()
       guard GetCursorPos(&position) else { return }

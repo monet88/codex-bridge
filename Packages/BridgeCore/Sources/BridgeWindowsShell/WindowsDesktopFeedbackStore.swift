@@ -8,13 +8,13 @@
 
     func postToast(
       _ message: String,
-      title: String = "操作已完成",
+      title: String = "The operation completed.",
       tone: BridgeDesktopStatusTone = .success
     ) {
       post(kind: .toast, tone: tone, title: title, message: message)
     }
 
-    func postAlert(_ message: String, title: String = "操作失败") {
+    func postAlert(_ message: String, title: String = "Operation failed") {
       post(kind: .alert, tone: .error, title: title, message: message)
     }
 
