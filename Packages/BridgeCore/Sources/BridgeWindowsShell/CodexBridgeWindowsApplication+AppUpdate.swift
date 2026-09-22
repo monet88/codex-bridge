@@ -57,8 +57,8 @@
         previousVersion != nil && previousVersion != currentVersion && currentVersion != "0.0.0"
       if justUpdated || isNewVersion {
         model.feedback.postToast(
-          "请在 ChatGPT 刷新一次插件，以防保留旧版缓存",
-          title: "应用已更新",
+          "Refresh the plugin in ChatGPT once to avoid a stale cache",
+          title: "App updated",
           tone: .success
         )
         UserDefaults.standard.removeObject(forKey: justUpdatedKey)

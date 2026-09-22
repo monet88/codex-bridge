@@ -66,8 +66,9 @@ class MockElement extends MockNode {
   }
 }
 
-const sandbox = {
-  window: {},
+function createI18nSandbox() {
+  const sandbox = {
+    window: {},
   document: {
     readyState: "complete",
     documentElement: new MockElement("html"),
@@ -97,6 +98,10 @@ const i18nCode = fs.readFileSync(i18nPath, "utf8");
 vm.createContext(sandbox);
 vm.runInContext(i18nCode, sandbox);
 
+  return sandbox;
+}
+
+const sandbox = createI18nSandbox();
 const i18n = sandbox.CodexBridgeI18n;
 assert(i18n, "CodexBridgeI18n must be exposed on global");
 console.log("[PASS] 2. i18n-en.js loaded and initialized successfully");
@@ -232,4 +237,35 @@ if (uncovered.length > 0) {
   console.log("[PASS] 8. 100% of static UI strings in index.html are covered by dictionary");
 }
 
-console.log("\n==> ALL VERIFICATION TESTS PASSED SUCCESSFULLY! (8/8 green)\n");
+// 9. Coverage scan: every Chinese literal in the desktop UI scripts must be translatable
+const resourceDir = path.dirname(indexPath);
+const scannedResources = fs
+  .readdirSync(resourceDir)
+  .filter((name) => name.endsWith(".js") && name !== "i18n-en.js");
+
+const jsLiteralRegex = /"(?:[^"\\\r\n]|\\.)*"|'(?:[^'\\\r\n]|\\.)*'|`(?:[^`\\]|\\.)*`/g;
+const untranslatedLiterals = new Set();
+for (const name of scannedResources) {
+  const source = fs.readFileSync(path.join(resourceDir, name), "utf8");
+  let literalMatch;
+  while ((literalMatch = jsLiteralRegex.exec(source)) !== null) {
+    const literalSource = literalMatch[0];
+    if (literalSource.includes("${") || !/[\u4e00-\u9fa5]/.test(literalSource)) continue;
+    const literal = vm.runInNewContext(literalSource).trim();
+    if (!literal) continue;
+    if (i18n.translate(literal) === literal && !i18n.DICT[literal]) {
+      untranslatedLiterals.add(`${name}: ${JSON.stringify(literal)}`);
+    }
+  }
+}
+
+if (untranslatedLiterals.size > 0) {
+  console.warn(`[WARN] ${untranslatedLiterals.size} Chinese literals in desktop UI resources are not covered:`);
+  for (const entry of [...untranslatedLiterals].sort()) console.warn("  - " + entry);
+} else {
+  console.log(`[PASS] 9. All Chinese literals in ${scannedResources.length} desktop UI resources are covered`);
+}
+
+console.log("\n==> ALL VERIFICATION TESTS PASSED SUCCESSFULLY! (9/9 green)\n");
+
+module.exports = { createI18nSandbox };

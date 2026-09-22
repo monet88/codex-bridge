@@ -697,6 +697,23 @@
     "已发现 DSH，需要配置 Base URL 与 API key": "DSH discovered; Base URL and API key required",
     "MCP 客户端状态已刷新。": "MCP client status refreshed.",
     "MCP 客户端状态已刷新": "MCP client status refreshed",
+    // 1.1.2 additions: Codex engine path configuration, update guidance, tunnels
+    "Codex 由 Bridge 自动发现；安装在非常规位置时，可在此指定可执行文件。": "Codex is discovered automatically by Bridge; if it is installed in a non-standard location, specify the executable here.",
+    "可执行文件路径（可选）": "Executable Path (Optional)",
+    "留空自动发现；也可填写 codex.exe 或 npm 的 codex.cmd 绝对路径": "Leave empty for auto-discovery; or enter the absolute path to codex.exe or npm's codex.cmd",
+    "保存路径": "Save Path",
+    "恢复自动发现": "Restore Auto-Discovery",
+    "自动发现": "Auto-Discovery",
+    "当前使用": "Currently In Use",
+    "未找到": "Not Found",
+    "指定的路径当前不可用，请重新选择或恢复自动发现。": "The specified path is currently unavailable; choose another path or restore auto-discovery.",
+    "若 Codex 装在非常规位置，请在路径输入框填写 codex.exe 或 codex.cmd 的绝对路径后重试。": "If Codex is installed in a non-standard location, enter the absolute path to codex.exe or codex.cmd in the path field and retry.",
+    "新版已发布，点击立即更新。更新后请在 ChatGPT 刷新一次插件，以防保留旧版缓存。": "A new version is available; click to update now. After updating, refresh the plugin in ChatGPT once to avoid a stale cache.",
+    "安装完成后 App 会重新启动。更新后请在 ChatGPT 刷新一次插件，以防保留旧版缓存。": "The app restarts after installation. After updating, refresh the plugin in ChatGPT once to avoid a stale cache.",
+    "清除 Secure Tunnel 配置？\n这会移除已保存的 Runtime Key 并重置 Tunnel 绑定。": "Clear Secure Tunnel configuration?\nThis will remove the saved Runtime Key and reset the tunnel binding.",
+    "应用已更新，请在 ChatGPT 刷新一次插件以防保留旧版缓存": "App updated; refresh the plugin in ChatGPT once to avoid a stale cache",
+    "Codex 已恢复自动发现": "Codex auto-discovery restored",
+    "Codex 可执行文件已更新": "Codex executable updated",
   };
 
       var REGEX_RULES = [
