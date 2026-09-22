@@ -8,23 +8,23 @@ Codex Bridge 是面向个人自托管场景的桌面 App 与后台服务，将 C
 
 macOS 与 Windows 共用 Swift 核心和桌面界面。项目权限、任务记录与配置保存在本机；调用 ChatGPT 或模型服务时，请求会发送给你选择的服务。
 
-当前版本为 `v1.1.1`。
+当前版本为 `v1.1.2`。
 
 ## 下载与安装
 
 从 [GitHub Releases](https://github.com/yeyuancc0-glitch/codex-bridge/releases/latest) 下载最新版本。
 
-| 平台 | v1.1.1 安装包 | 安装方式 |
+| 平台 | v1.1.2 安装包 | 安装方式 |
 | --- | --- | --- |
-| macOS 14+，Apple Silicon | `CodexBridge-1.1.1-macos-arm64.dmg` | 打开 DMG，将 App 拖入 Applications |
-| Windows x64 | `CodexBridge-Windows-x64-1.1.1-Setup.exe` | 运行安装器，选择安装位置 |
+| macOS 14+，Apple Silicon | `CodexBridge-1.1.2-macos-arm64.dmg` | 打开 DMG，将 App 拖入 Applications |
+| Windows x64 | `CodexBridge-Windows-x64-1.1.2-Setup.exe` | 运行安装器，选择安装位置 |
 | Windows x64，便携运行 | `codex-bridge-windows-x64.zip` | 完整解压后运行 `codex-bridge-windows-app.exe` |
 
 macOS 安装包使用 ad-hoc 签名，尚未经过 Apple 公证。若系统阻止打开，请在系统设置的“隐私与安全性”中允许此次打开。Windows 需要 WebView2 Runtime；App 会在运行环境缺失时给出提示。
 
 升级时沿用现有应用数据和内置浏览器登录态。Windows 关闭主窗口后保留托盘，使用托盘菜单退出。
 
-带内置更新功能的版本会在每次启动时后台检查 GitHub 更新，发现新版后在首页提示。点击“立即更新”即可下载并安装；有任务正在执行时，等待任务结束后安装并重新启动。设置页可手动检查更新。旧版本需先手动安装一次带更新功能的版本。
+带内置更新功能的版本会在每次启动时后台检查 GitHub 更新，发现新版后在首页提示。点击“立即更新”即可下载并安装；有任务正在执行时，等待任务结束后安装并重新启动。每次更新完成后请在 ChatGPT 中刷新一次插件以清除旧版缓存（参见 [配置指南](./docs/CHATGPT_DEVELOPER_MODE.md#8-版本更新后在-chatgpt-刷新插件防旧版缓存)）。设置页可手动检查更新。旧版本需先手动安装一次带更新功能的版本。
 
 ## 实际界面与任务演示
 
@@ -76,7 +76,7 @@ OpenCode 的模型与权限设置，以及 Direct 工作区的命令模式、白
 2. **添加项目**：登记本地目录，并设置读取、写入和网络权限。
 3. **连接 Agent**：首次初始化自动扫描并保存本机 Agent；在连接页点击连接完成验证和启用。后续安装 Agent 后点击“扫描 Agent”更新目录。Codex 使用本机 Codex 执行通道；DeepSeek Harness 可在 App 中配置服务地址和 API key。
 4. **选择项目和模式**：在工作台选择项目以及 `Read Only` / `Write`。
-5. **连接聊天客户端**：ChatGPT 使用 OpenAI Secure MCP Tunnel；Qwen Studio 使用本机回环 HTTP MCP，连接页提供配置复制入口。
+5. **连接聊天客户端**：ChatGPT 使用 OpenAI Secure MCP Tunnel（ChatGPT 需要有 Plus 及以上订阅或团队订阅才可以使用）；Qwen Studio 使用本机回环 HTTP MCP，连接页提供配置复制入口。
 6. **执行任务**：在本机工作台提交，或由已连接的聊天客户端调用 `submit_task`。任务输出、工具执行、审批和结构化提问在工作台显示。
 
 密钥通过系统凭据存储管理。分享配置、日志或截图前，请移除凭据。
