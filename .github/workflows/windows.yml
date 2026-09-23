@@ -3,12 +3,13 @@ name: windows
 on:
   push:
     branches: [win]
+    tags: ['v*']
   pull_request:
     branches: [win]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: windows-${{ github.ref }}
@@ -359,3 +360,11 @@ jobs:
             .build/windows-installer/${{ matrix.architecture }}/*-Setup.exe.sha256
             .build/windows-installer/${{ matrix.architecture }}/INSTALLER-BUILD-INFO.json
           if-no-files-found: error
+      - name: Publish Windows assets to GitHub Release
+        if: matrix.publish && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            .build/windows-dist/codex-bridge-windows-${{ matrix.architecture }}.zip
+            .build/windows-installer/${{ matrix.architecture }}/*-Setup.exe
+            .build/windows-installer/${{ matrix.architecture }}/*-Setup.exe.sha256

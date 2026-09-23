@@ -17,10 +17,9 @@ struct LegacySourceFiles {
   let rootURL: URL
 
   func openDirectory() throws -> LegacyVerifiedSourceDirectory? {
-    let path = rootURL.path(percentEncoded: false)
     #if os(Windows)
       // Windows paths carry drive letters instead of a leading slash.
-      var path = path
+      var path = rootURL.path(percentEncoded: false)
       if path.hasPrefix("/") || path.hasPrefix("\\") {
         let trimmed = String(path.dropFirst())
         if trimmed.count >= 2,
@@ -42,6 +41,7 @@ struct LegacySourceFiles {
       }
       return try LegacyVerifiedSourceDirectory.openWindows(path: path, rootURL: rootURL)
     #else
+      let path = rootURL.path(percentEncoded: false)
       guard rootURL.isFileURL,
         path.hasPrefix("/"),
         path.utf8.count <= 16_384,
