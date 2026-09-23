@@ -20,6 +20,19 @@ struct LegacySourceFiles {
     let path = rootURL.path(percentEncoded: false)
     #if os(Windows)
       // Windows paths carry drive letters instead of a leading slash.
+      var path = path
+      if path.hasPrefix("/") || path.hasPrefix("\\") {
+        let trimmed = String(path.dropFirst())
+        if trimmed.count >= 2,
+          trimmed[trimmed.index(trimmed.startIndex, offsetBy: 1)] == ":"
+        {
+          path = trimmed
+        }
+      }
+      path = path.replacingOccurrences(of: "/", with: "\\")
+      while path.count > 3, path.hasSuffix("\\") {
+        path.removeLast()
+      }
       guard rootURL.isFileURL,
         path.utf8.count <= 16_384,
         !path.contains("\0"),

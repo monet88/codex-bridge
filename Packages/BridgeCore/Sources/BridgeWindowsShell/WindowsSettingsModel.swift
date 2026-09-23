@@ -132,14 +132,14 @@
     func savePreferences(_ value: IPCModelPreferences) async {
       guard connectionState == .connected, !busy else { return }
       guard !value.executionModel.isEmpty else {
-        let message = "模型设置不完整。"
+        let message = "The model configuration is incomplete."
         statusText = message
-        feedback.postAlert(message, title: "模型设置无法保存")
+        feedback.postAlert(message, title: "Model settings could not be saved.")
         publishDisplay()
         return
       }
       busy = true
-      statusText = "正在保存模型设置…"
+      statusText = "Saving model settings…"
       publishDisplay()
       defer {
         busy = false
@@ -157,10 +157,10 @@
       do {
         try await client.setModelPreferences(normalized)
         preferences = normalized
-        statusText = "模型设置已保存。"
+        statusText = "Model settings saved."
         feedback.postToast(statusText)
       } catch {
-        statusText = "模型设置保存失败：\(BridgeServiceErrorMessage.message(error))"
+        statusText = "Failed to save model settings: \(BridgeServiceErrorMessage.message(error))"
         feedback.postAlert(statusText)
       }
       publishDisplay()
